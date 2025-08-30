@@ -1,516 +1,681 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Culye Immigration Services - Premier Canadian Immigration Consulting</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #ffffff;
-            color: #1a202c;
-        }
-        .hero-section {
-            background-image: linear-gradient(rgba(17, 24, 39, 0.7), rgba(17, 24, 39, 0.7)), url('hero.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-        .cta-button {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-        .service-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid #e2e8f0;
-        }
-        .service-card:hover {
-            transform: translateY(-8px);
-            border-color: #2563eb;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-        }
-        .fade-in {
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Culye Immigration Services | Your Bridge to Canada</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://js.stripe.com/v3/"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0a0a0a;
+      color: #e5e7eb;
+    }
+    .form-step {
+      display: none;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    .form-step.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .progress-bar-fill {
+      transition: width 0.5s ease-in-out;
+    }
+    .radio-card {
+      transition: all 0.2s ease-in-out;
+    }
+    .radio-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    input[type="radio"]:checked + .radio-card {
+      border-color: #2563eb;
+      background-color: #1e3a8a;
+      color: white;
+    }
+    .nav-link {
+      position: relative;
+      transition: color 0.3s;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #3b82f6;
+      transition: width 0.3s;
+    }
+    .nav-link:hover::after, .nav-link.active::after {
+      width: 100%;
+    }
+    .StripeElement {
+      background-color: #1f2937;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid #4b5563;
+      color: #e5e7eb;
+    }
+    .StripeElement--focus {
+      border-color: #3b82f6;
+    }
+    @keyframes fade-in-up {
+        0% {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(20px);
         }
-        .fade-in.visible {
+        100% {
             opacity: 1;
             transform: translateY(0);
         }
-        /* Multi-step form styles */
-        .form-step { display: none; }
-        .form-step.active { display: block; }
-        .form-progress-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            position: relative;
-        }
-        .progress-step {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background-color: #e2e8f0;
-            border: 2px solid #e2e8f0;
-            color: #4a5568;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.4s ease;
-            z-index: 10;
-        }
-        .progress-step.active {
-            background-color: #2563eb;
-            border-color: #2563eb;
-            color: white;
-        }
-        .progress-line {
-            position: absolute;
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
-            height: 4px;
-            background-color: #e2e8f0;
-            width: 100%;
-            z-index: 1;
-        }
-        .progress-line-fill {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            background-color: #2563eb;
-            width: 0%;
-            transition: width 0.4s ease;
-        }
-    </style>
+    }
+    .animate-fade-in-up {
+        animation: fade-in-up 0.8s ease-out forwards;
+    }
+  </style>
 </head>
-<body class="text-gray-800">
+<body class="bg-gray-900 text-gray-200">
 
-    <!-- Header & Navigation -->
-    <header id="header" class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 transition-all duration-300">
-        <nav class="container mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
-            <a href="#" class="flex items-center space-x-3">
-                <img src="logo.png" alt="Culye Immigration Services Logo" class="h-14 w-14 object-contain">
-                <span class="text-2xl font-extrabold text-gray-900 tracking-tight">CULYE</span>
-            </a>
-            <div class="hidden lg:flex items-center space-x-10">
-                <a href="#about" class="text-gray-600 hover:text-blue-600 font-medium transition">About</a>
-                <a href="#services" class="text-gray-600 hover:text-blue-600 font-medium transition">Services</a>
-                <a href="#process" class="text-gray-600 hover:text-blue-600 font-medium transition">Process</a>
-                <a href="#news" class="text-gray-600 hover:text-blue-600 font-medium transition">Insights</a>
-                <a href="#contact" class="bg-blue-600 text-white px-6 py-2.5 rounded-full font-bold cta-button hover:bg-blue-700">Start Assessment</a>
-            </div>
-            <button id="mobile-menu-button" class="lg:hidden text-gray-800">
-                <i class="fas fa-bars text-2xl"></i>
-            </button>
-        </nav>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden lg:hidden">
-             <div class="px-6 pt-2 pb-4 space-y-3">
-                <a href="#about" class="block py-2 text-gray-600 hover:text-blue-600 font-medium">About</a>
-                <a href="#services" class="block py-2 text-gray-600 hover:text-blue-600 font-medium">Services</a>
-                <a href="#process" class="block py-2 text-gray-600 hover:text-blue-600 font-medium">Process</a>
-                <a href="#news" class="block py-2 text-gray-600 hover:text-blue-600 font-medium">Insights</a>
-                <a href="#contact" class="block mt-2 bg-blue-600 text-white text-center px-6 py-3 rounded-full font-bold cta-button hover:bg-blue-700">Start Assessment</a>
-            </div>
+  <!-- Header -->
+  <header class="bg-gray-900/80 backdrop-blur-md fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="header">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <div class="flex-shrink-0">
+          <a href="#home" class="flex items-center space-x-2">
+            <!-- You can place your logo.png here -->
+            <img class="h-10 w-auto" src="logo.png" alt="Culye Immigration Services Logo" onerror="this.onerror=null;this.src='https://placehold.co/200x80/0a0a0a/ffffff?text=Culye+Inc.';">
+            <span class="text-xl font-bold text-white"></span>
+          </a>
         </div>
-    </header>
+        <div class="hidden md:block">
+          <div class="ml-10 flex items-baseline space-x-4">
+            <a href="#home" class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+            <a href="#about" class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">About</a>
+            <a href="#services" class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Services</a>
+            <a href="#process" class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Process</a>
+            <a href="#contact" class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Assessment</a>
+          </div>
+        </div>
+        <div class="hidden md:block">
+             <a href="#contact" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg text-sm transition duration-300 transform hover:scale-105">
+                Contact Us
+            </a>
+        </div>
+        <div class="-mr-2 flex md:hidden">
+          <button id="mobile-menu-button" type="button" class="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+            <span class="sr-only">Open main menu</span>
+            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+            <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="mobile-menu" class="md:hidden hidden">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <a href="#home" class="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">Home</a>
+        <a href="#about" class="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">About</a>
+        <a href="#services" class="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">Services</a>
+        <a href="#process" class="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">Process</a>
+        <a href="#contact" class="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">Assessment</a>
+         <a href="#contact" class="block bg-blue-600 hover:bg-blue-700 text-white font-bold mt-2 py-2 px-3 rounded-lg text-base transition duration-300">
+            Contact Us
+        </a>
+      </div>
+    </div>
+  </header>
 
-    <!-- Hero Section -->
-    <section class="hero-section text-white min-h-screen flex items-center justify-center text-center">
-        <div class="container mx-auto px-4 sm:px-6 py-24 fade-in">
-            <h1 class="text-4xl sm:text-5xl md:text-7xl font-black tracking-tight leading-tight mb-6">Chart Your Course to Canada.</h1>
-            <p class="text-lg md:text-xl max-w-3xl mx-auto text-gray-200 mb-10">Expert strategy, meticulous preparation, and unwavering support for your Canadian immigration journey. We translate ambition into achievement.</p>
-            <a href="#contact" class="bg-blue-600 text-white px-10 py-4 rounded-full font-bold text-lg cta-button hover:bg-blue-700">Begin Your Free Assessment</a>
+  <main>
+  <!-- Hero Section -->
+  <section id="home" class="relative text-white min-h-screen flex items-center justify-center">
+    <!-- Mobile background -->
+    <div class="absolute inset-0 bg-cover bg-center md:hidden" style="background-image: url('mobilehero.png');"></div>
+    <!-- Desktop background -->
+    <div class="absolute inset-0 bg-cover bg-center hidden md:block" style="background-image: url('hero.png');"></div>
+
+    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent"></div>
+    <div class="relative z-10 text-center px-4 animate-fade-in-up">
+      <h1 class="text-4xl md:text-7xl font-extrabold tracking-tight mb-4 leading-tight" style="text-shadow: 2px 2px 8px rgba(0,0,0,0.7);">
+        Your Bridge to a Future in Canada
+      </h1>
+      <p class="text-lg md:text-2xl max-w-3xl mx-auto mb-8 text-gray-200" style="text-shadow: 1px 1px 4px rgba(0,0,0,0.7);">
+        Expert guidance for a seamless immigration journey. From Edmonton to the world, we make your Canadian dream a reality.
+      </p>
+      <button onclick="smoothScroll('#contact')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg text-lg transition duration-300 transform hover:scale-105 shadow-lg">
+        Start Your Free Assessment
+      </button>
+    </div>
+  </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 md:py-32 bg-gray-900">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center">
+          <div>
+            <h2 class="text-3xl font-extrabold text-white sm:text-4xl mb-4">Meet Your Regulated Canadian Immigration Consultant (RCIC)</h2>
+            <p class="text-lg text-gray-400 mb-6">Our Consultant, Omolara Kuye is an active member of the Immigration Consultants of Canada Regulatory Council (ICCRC) with Mem ID R531179. She is in good standing and possesses good knowledge of Canadian immigration law with the authorization to provide genuine and professional advice in the best interest of clients.</p>
+            <a href="https://college-ic.ca/protecting-the-public/find-an-immigration-consultant" target="_blank" class="inline-block bg-transparent border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
+              Verify Status with RCIC
+            </a>
+          </div>
+          <div class="mt-10 lg:mt-0">
+            <img class="rounded-xl shadow-2xl mx-auto" src="me.png" alt="Omolara Kuye, RCIC" onerror="this.onerror=null;this.src='https://placehold.co/600x600/111827/ffffff?text=Omolara+Kuye';">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 md:py-32 bg-black">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl">Our Immigration Services</h2>
+                <p class="mt-4 text-lg text-gray-400 max-w-3xl mx-auto">We provide professional consultation and representation on all permanent and temporary Canadian visas & permits, and Canadian Citizenship applications.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service Card 1: Permanent Residence -->
+                <div class="bg-gray-900 p-8 rounded-xl shadow-lg border border-gray-800">
+                    <h3 class="text-xl font-bold text-white mb-2">Permanent Residence</h3>
+                    <p class="text-gray-400 mb-4">Pathways for skilled workers, families, and business investors to become permanent residents of Canada.</p>
+                    <ul class="list-disc list-inside text-gray-400 space-y-1">
+                        <li>Express Entry (PNP, FSW, FST)</li>
+                        <li>Family Sponsorship</li>
+                        <li>Economic Class Programs</li>
+                    </ul>
+                </div>
+                <!-- Service Card 2: Temporary Permits -->
+                <div class="bg-gray-900 p-8 rounded-xl shadow-lg border border-gray-800">
+                    <h3 class="text-xl font-bold text-white mb-2">Temporary Visas & Permits</h3>
+                    <p class="text-gray-400 mb-4">Assistance for individuals seeking to visit, work, or study in Canada on a temporary basis.</p>
+                    <ul class="list-disc list-inside text-gray-400 space-y-1">
+                        <li>Work Permits (LMIA)</li>
+                        <li>Tourist/Visitor Visas</li>
+                        <li>Student Permits</li>
+                    </ul>
+                </div>
+                <!-- Service Card 3: Corporate Services -->
+                <div class="bg-gray-900 p-8 rounded-xl shadow-lg border border-gray-800">
+                    <h3 class="text-xl font-bold text-white mb-2">Corporate & Business</h3>
+                    <p class="text-gray-400 mb-4">Specialized services for businesses, entrepreneurs, and agricultural professionals.</p>
+                     <ul class="list-disc list-inside text-gray-400 space-y-1">
+                        <li>Business Class Residence</li>
+                        <li>Self-Employed Persons</li>
+                        <li>Professional Farmers</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </section>
 
-    <main>
-        <!-- About Us Section -->
-        <section id="about" class="py-24 bg-white">
-            <div class="container mx-auto px-4 sm:px-6">
-                 <div class="grid md:grid-cols-2 gap-16 items-center">
-                    <div class="fade-in">
-                        <span class="text-blue-600 font-bold uppercase tracking-wider">Our Commitment</span>
-                        <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 mt-2 mb-6">Trusted Expertise in Canadian Immigration.</h2>
-                        <p class="text-lg text-gray-600 mb-6">Culye Immigration Services (CIS) is a premier consulting firm in Edmonton, Alberta, specializing in comprehensive representation for all permanent and temporary Canadian visas, permits, and citizenship applications. Immigration is a landscape of constant change; we provide the clarity and expertise you need to navigate it successfully.</p>
-                        <div class="bg-gray-50 p-6 rounded-lg border-l-4 border-blue-500">
-                             <h4 class="text-xl font-bold mb-4">Meet Your RCIC-IRB Consultant</h4>
-                            <p class="text-gray-700">Our lead consultant, Omolara Koye (RCIC-IRB, R531179), is a distinguished member of the College of Immigration and Citizenship Consultants (CICC). Her profound knowledge of Canadian immigration law ensures you receive ethical, accurate, and strategic advice tailored to your unique circumstances.</p>
-                             <a href="#" class="mt-4 inline-block text-blue-600 font-semibold group">
-                                Verify CICC Status
-                                <span class="group-hover:ml-2 transition-all duration-200">&rarr;</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="fade-in">
-                        <img src="me.png" alt="Omolara Koye, RCIC" class="rounded-xl shadow-2xl w-full h-full object-cover">
-                    </div>
-                </div>
+    <!-- Process Section -->
+    <section id="process" class="py-20 md:py-32 bg-gray-900">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl">How We Work With You</h2>
+                <p class="mt-4 text-lg text-gray-400 max-w-3xl mx-auto">We are fully aware of how important it is for you to know where you are at and what would come up next, so we have drafted a step by step procedure and guideline to give you a better understanding of what our work with you entails.</p>
             </div>
-        </section>
-
-        <!-- Services Section -->
-        <section id="services" class="py-24 bg-gray-50">
-            <div class="container mx-auto px-4 sm:px-6">
-                <div class="text-center mb-16 fade-in">
-                     <span class="text-blue-600 font-bold uppercase tracking-wider">Our Services</span>
-                    <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 mt-2">Tailored Immigration Pathways</h2>
-                    <p class="text-lg text-gray-600 mt-4 max-w-3xl mx-auto">We offer a full spectrum of immigration services, from temporary visits to permanent residency and corporate solutions.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                <!-- Step 1 -->
+                <div class="bg-black p-6 rounded-lg border border-gray-800">
+                    <div class="text-blue-500 font-extrabold text-4xl mb-4">01</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Registration</h3>
+                    <p class="text-gray-400">Contact us to confirm if we can help. We'll provide a brief, detailed explanation of our process and potential costs.</p>
                 </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Service Card 1 -->
-                    <div class="service-card bg-white p-8 rounded-xl shadow-lg fade-in">
-                        <div class="bg-blue-100 text-blue-600 w-16 h-16 rounded-full flex items-center justify-center mb-6"><i class="fas fa-briefcase text-2xl"></i></div>
-                        <h3 class="text-2xl font-bold mb-4">Temporary Residence</h3>
-                        <p class="text-gray-600 mb-4">Strategic solutions for working, studying, or visiting Canada.</p>
-                        <ul class="space-y-2 text-gray-700">
-                           <li class="flex items-start"><i class="fas fa-check-circle text-blue-500 mt-1 mr-3"></i>Work & Study Permits</li>
-                           <li class="flex items-start"><i class="fas fa-check-circle text-blue-500 mt-1 mr-3"></i>Visitor & Super Visas</li>
-                           <li class="flex items-start"><i class="fas fa-check-circle text-blue-500 mt-1 mr-3"></i>Permit Extensions</li>
-                        </ul>
-                    </div>
-                    <!-- Service Card 2 -->
-                    <div class="service-card bg-white p-8 rounded-xl shadow-lg fade-in" style="transition-delay: 100ms;">
-                        <div class="bg-blue-100 text-blue-600 w-16 h-16 rounded-full flex items-center justify-center mb-6"><i class="fas fa-flag text-2xl"></i></div>
-                        <h3 class="text-2xl font-bold mb-4">Permanent Residence</h3>
-                        <p class="text-gray-600 mb-4">Comprehensive guidance on your path to becoming a Canadian.</p>
-                         <ul class="space-y-2 text-gray-700">
-                           <li class="flex items-start"><i class="fas fa-check-circle text-blue-500 mt-1 mr-3"></i>Express Entry Profile Optimization</li>
-                           <li class="flex items-start"><i class="fas fa-check-circle text-blue-500 mt-1 mr-3"></i>Provincial Nominee Programs (PNP)</li>
-                           <li class="flex items-start"><i class="fas fa-check-circle text-blue-500 mt-1 mr-3"></i>Family & Spousal Sponsorship</li>
-                        </ul>
-                    </div>
-                    <!-- Service Card 3 -->
-                    <div class="service-card bg-white p-8 rounded-xl shadow-lg fade-in" style="transition-delay: 200ms;">
-                         <div class="bg-blue-100 text-blue-600 w-16 h-16 rounded-full flex items-center justify-center mb-6"><i class="fas fa-building text-2xl"></i></div>
-                        <h3 class="text-2xl font-bold mb-4">Corporate & Business</h3>
-                        <p class="text-gray-600 mb-4">Solutions for businesses and entrepreneurs.</p>
-                        <ul class="space-y-2 text-gray-700">
-                           <li class="flex items-start"><i class="fas fa-check-circle text-blue-500 mt-1 mr-3"></i>Labour Market Impact Assessments (LMIA)</li>
-                           <li class="flex items-start"><i class="fas fa-check-circle text-blue-500 mt-1 mr-3"></i>Intra-Company Transfers</li>
-                           <li class="flex items-start"><i class="fas fa-check-circle text-blue-500 mt-1 mr-3"></i>Business Visitor & Investor Programs</li>
-                        </ul>
-                    </div>
+                <!-- Step 2 -->
+                <div class="bg-black p-6 rounded-lg border border-gray-800">
+                    <div class="text-blue-500 font-extrabold text-4xl mb-4">02</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Profile Assessment</h3>
+                    <p class="text-gray-400">For prospective clients, consultations begin with a detailed profile assessment to determine eligible Canadian immigration program options.</p>
                 </div>
-            </div>
-        </section>
-        
-        <!-- Our Process Section -->
-        <section id="process" class="py-24 bg-white">
-            <div class="container mx-auto px-4 sm:px-6">
-                 <div class="text-center mb-16 fade-in">
-                    <span class="text-blue-600 font-bold uppercase tracking-wider">Our Process</span>
-                    <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 mt-2">Your Blueprint for Success</h2>
-                    <p class="text-lg text-gray-600 mt-4 max-w-3xl mx-auto">A meticulous, four-step methodology designed for clarity, efficiency, and optimal outcomes.</p>
+                <!-- Step 3 -->
+                 <div class="bg-black p-6 rounded-lg border border-gray-800">
+                    <div class="text-blue-500 font-extrabold text-4xl mb-4">03</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Application & Documentation</h3>
+                    <p class="text-gray-400">After the first consultation, we will help you prepare and submit the required documentation for your chosen immigration stream.</p>
                 </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-                    <!-- Step 1 -->
-                    <div class="fade-in">
-                        <div class="bg-gray-100 text-blue-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold">1</div>
-                        <h3 class="text-xl font-bold mb-2">Initial Consultation</h3>
-                        <p class="text-gray-600">We begin with a thorough assessment of your profile to confirm eligibility and outline potential immigration pathways.</p>
-                    </div>
-                     <!-- Step 2 -->
-                    <div class="fade-in" style="transition-delay: 150ms;">
-                        <div class="bg-gray-100 text-blue-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold">2</div>
-                        <h3 class="text-xl font-bold mb-2">Strategic Planning</h3>
-                        <p class="text-gray-600">Upon engagement, we develop a customized strategy, detailing the required documentation and a clear timeline.</p>
-                    </div>
-                     <!-- Step 3 -->
-                    <div class="fade-in" style="transition-delay: 300ms;">
-                        <div class="bg-gray-100 text-blue-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold">3</div>
-                        <h3 class="text-xl font-bold mb-2">Application Assembly</h3>
-                        <p class="text-gray-600">We meticulously prepare and review every aspect of your application to ensure it is compelling and complete before submission.</p>
-                    </div>
-                     <!-- Step 4 -->
-                    <div class="fade-in" style="transition-delay: 450ms;">
-                        <div class="bg-gray-100 text-blue-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold">4</div>
-                        <h3 class="text-xl font-bold mb-2">Proactive Follow-up</h3>
-                        <p class="text-gray-600">Post-submission, we proactively communicate with immigration authorities and provide you with timely updates until a final decision is made.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- News/Blog Section -->
-        <section id="news" class="py-24 bg-gray-50">
-            <div class="container mx-auto px-4 sm:px-6">
-                 <div class="text-center mb-16 fade-in">
-                    <span class="text-blue-600 font-bold uppercase tracking-wider">Immigration Insights</span>
-                    <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 mt-2">Stay Informed, Stay Ahead</h2>
-                    <p class="text-lg text-gray-600 mt-4 max-w-3xl mx-auto">Key updates and analysis on the ever-evolving world of Canadian immigration.</p>
-                </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Blog Post 1 -->
-                    <div class="bg-white rounded-xl shadow-lg overflow-hidden fade-in group">
-                        <img src="https://placehold.co/600x400/D1E2FF/1C3D5A?text=RNIP+Update" alt="Rural town" class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300">
-                        <div class="p-6">
-                            <span class="text-sm text-gray-500 font-medium">Mar 27, 2025 &bull; Analysis</span>
-                            <h3 class="text-xl font-bold my-2 hover:text-blue-600 transition"><a href="#">Navigating the Rural and Northern Immigration Pilot (RNIP)</a></h3>
-                            <p class="text-gray-600 mb-4">A deep dive into the RNIP, exploring community-specific requirements and opportunities for skilled workers.</p>
-                            <a href="#" class="font-semibold text-blue-600 group-hover:underline">Read Analysis <span class="group-hover:ml-1 transition-all">&rarr;</span></a>
-                        </div>
-                    </div>
-                    <!-- Blog Post 2 -->
-                    <div class="bg-white rounded-xl shadow-lg overflow-hidden fade-in group" style="transition-delay: 150ms;">
-                         <img src="https://placehold.co/600x400/FFE4C4/4A2700?text=PNP+Trends" alt="Autumn scene" class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300">
-                        <div class="p-6">
-                            <span class="text-sm text-gray-500 font-medium">Oct 8, 2024 &bull; Update</span>
-                             <h3 class="text-xl font-bold my-2 hover:text-blue-600 transition"><a href="#">Key Occupations in Demand Across Provincial Nominee Programs</a></h3>
-                            <p class="text-gray-600 mb-4">Explore the latest trends in PNPs, focusing on high-demand sectors in provinces like New Brunswick.</p>
-                             <a href="#" class="font-semibold text-blue-600 group-hover:underline">Read Update <span class="group-hover:ml-1 transition-all">&rarr;</span></a>
-                        </div>
-                    </div>
-                    <!-- Blog Post 3 -->
-                    <div class="bg-white rounded-xl shadow-lg overflow-hidden fade-in group" style="transition-delay: 300ms;">
-                         <img src="https://placehold.co/600x400/E9D8FD/44337A?text=Express+Entry" alt="Modern building" class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300">
-                        <div class="p-6">
-                            <span class="text-sm text-gray-500 font-medium">Sep 22, 2024 &bull; Guide</span>
-                            <h3 class="text-xl font-bold my-2 hover:text-blue-600 transition"><a href="#">Maximizing Your CRS Score in the Express Entry Pool</a></h3>
-                            <p class="text-gray-600 mb-4">Actionable strategies for improving your Comprehensive Ranking System (CRS) score to receive an Invitation to Apply (ITA).</p>
-                             <a href="#" class="font-semibold text-blue-600 group-hover:underline">Read Guide <span class="group-hover:ml-1 transition-all">&rarr;</span></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section with Multi-Step Form -->
-        <section id="contact" class="py-24 bg-gray-900 text-white">
-            <div class="container mx-auto px-4 sm:px-6">
-                 <div class="text-center mb-12 fade-in">
-                    <h2 class="text-4xl md:text-5xl font-extrabold">Start Your Free Assessment</h2>
-                    <p class="text-lg text-gray-300 mt-4 max-w-3xl mx-auto">This confidential assessment helps us understand your profile. Let's discover your best path to Canada.</p>
-                </div>
-                <div class="max-w-3xl mx-auto bg-white text-gray-800 rounded-xl shadow-2xl p-6 sm:p-8 md:p-12 fade-in">
-                    <div id="multiStepForm">
-                        <!-- Progress Bar -->
-                        <div class="form-progress-bar">
-                             <div class="progress-line"><div id="progress-line-fill" class="progress-line-fill"></div></div>
-                            <div class="progress-step active" data-step="1">1</div>
-                            <div class="progress-step" data-step="2">2</div>
-                            <div class="progress-step" data-step="3">3</div>
-                            <div class="progress-step" data-step="4">4</div>
-                        </div>
-
-                        <form id="assessment-form">
-                            <!-- Step 1: Goal -->
-                            <div class="form-step active" data-step="1">
-                                <h3 class="text-2xl font-bold text-center mb-6">What is your primary goal?</h3>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <label class="p-4 border rounded-lg cursor-pointer hover:bg-gray-50 text-center"><input type="radio" name="goal" value="Work in Canada" class="mr-2">Work in Canada</label>
-                                    <label class="p-4 border rounded-lg cursor-pointer hover:bg-gray-50 text-center"><input type="radio" name="goal" value="Study in Canada" class="mr-2">Study in Canada</label>
-                                    <label class="p-4 border rounded-lg cursor-pointer hover:bg-gray-50 text-center"><input type="radio" name="goal" value="Join Family" class="mr-2">Join Family</label>
-                                    <label class="p-4 border rounded-lg cursor-pointer hover:bg-gray-50 text-center"><input type="radio" name="goal" value="Business/Invest" class="mr-2">Business/Invest</label>
-                                </div>
-                                <div class="mt-8 text-right">
-                                    <button type="button" class="next-btn bg-blue-600 text-white px-8 py-3 rounded-full font-bold cta-button">Next &rarr;</button>
-                                </div>
-                            </div>
-
-                            <!-- Step 2: Details (Dynamic) -->
-                            <div class="form-step" data-step="2">
-                                <h3 class="text-2xl font-bold text-center mb-6">Tell us about yourself</h3>
-                                <div id="dynamic-fields" class="space-y-4">
-                                    <!-- Fields will be injected here by JS -->
-                                </div>
-                                <div class="mt-8 flex justify-between">
-                                    <button type="button" class="prev-btn bg-gray-200 text-gray-800 px-8 py-3 rounded-full font-bold cta-button">&larr; Back</button>
-                                    <button type="button" class="next-btn bg-blue-600 text-white px-8 py-3 rounded-full font-bold cta-button">Next &rarr;</button>
-                                </div>
-                            </div>
-
-                            <!-- Step 3: Contact Info -->
-                             <div class="form-step" data-step="3">
-                                <h3 class="text-2xl font-bold text-center mb-6">How can we reach you?</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label for="fullName" class="font-medium">Full Name</label>
-                                        <input type="text" id="fullName" name="fullName" required class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                    </div>
-                                    <div>
-                                        <label for="email" class="font-medium">Email Address</label>
-                                        <input type="email" id="email" name="email" required class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                    </div>
-                                     <div>
-                                        <label for="phone" class="font-medium">Phone Number</label>
-                                        <input type="tel" id="phone" name="phone" required class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                    </div>
-                                    <div>
-                                        <label for="country" class="font-medium">Country of Residence</label>
-                                        <input type="text" id="country" name="country" required class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                    </div>
-                                </div>
-                                <div class="mt-8 flex justify-between">
-                                    <button type="button" class="prev-btn bg-gray-200 text-gray-800 px-8 py-3 rounded-full font-bold cta-button">&larr; Back</button>
-                                    <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-full font-bold cta-button">Submit Assessment</button>
-                                </div>
-                            </div>
-                            
-                             <!-- Step 4: Confirmation -->
-                            <div class="form-step text-center" data-step="4">
-                                <div id="form-submission-status">
-                                    <i class="fas fa-spinner fa-spin text-4xl text-blue-600"></i>
-                                    <p class="mt-4 text-lg font-medium">Submitting your assessment...</p>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-    
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white">
-        <div class="container mx-auto px-4 sm:px-6 py-12">
-            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-6 md:space-y-0">
-                 <p>&copy; <span id="year"></span> Culye Immigration Services Inc. All rights reserved.</p>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook-f text-xl"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter text-xl"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram text-xl"></i></a>
+                <!-- Step 4 -->
+                 <div class="bg-black p-6 rounded-lg border border-gray-800">
+                    <div class="text-blue-500 font-extrabold text-4xl mb-4">04</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Keeping You Informed</h3>
+                    <p class="text-gray-400">We understand that it may be frustrating to be left in the dark. We promise to keep you informed every step of the way.</p>
                 </div>
             </div>
         </div>
-    </footer>
+    </section>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Mobile menu toggle
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
 
-            // Set current year in footer
-            document.getElementById('year').textContent = new Date().getFullYear();
+    <!-- Contact & Assessment Form Section -->
+    <section id="contact" class="py-20 md:py-32 bg-black">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-extrabold text-white sm:text-4xl">Start Your Free Assessment</h2>
+          <p class="mt-4 text-lg text-gray-400">Answer a few questions to help us understand your profile. It only takes a few minutes.</p>
+        </div>
 
-            // Sticky header background change on scroll
-            const header = document.getElementById('header');
-            window.addEventListener('scroll', () => {
-                header.classList.toggle('py-2', window.scrollY > 50);
-                header.classList.toggle('py-3', window.scrollY <= 50);
-            });
+        <div class="max-w-4xl mx-auto bg-gray-900 p-8 rounded-2xl shadow-2xl border border-gray-800">
+          <div id="assessment-form-container">
+            <!-- Progress Bar -->
+            <div class="mb-8">
+              <div class="flex justify-between mb-2">
+                <span id="progress-text" class="text-sm font-medium text-gray-400">Step 1 of 6</span>
+                <span id="progress-percent" class="text-sm font-medium text-white">0%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2.5">
+                <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full progress-bar-fill" style="width: 0%"></div>
+              </div>
+            </div>
 
-            // Fade-in animations on scroll
-            const faders = document.querySelectorAll('.fade-in');
-            const appearOptions = { threshold: 0.15, rootMargin: "0px 0px -10% 0px" };
-            const appearOnScroll = new IntersectionObserver(function(entries, observer) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, appearOptions);
-            faders.forEach(fader => appearOnScroll.observe(fader));
+            <form id="assessment-form">
+              <!-- Step 1: Personal Information -->
+              <div id="step-1" class="form-step active">
+                <h3 class="text-2xl font-semibold text-white mb-6">Personal Information</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label for="fullName" class="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" required class="w-full bg-gray-800 border border-gray-700 text-white rounded-lg p-3 focus:ring-blue-500 focus:border-blue-500">
+                  </div>
+                  <div>
+                    <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+                    <input type="email" id="email" name="email" required class="w-full bg-gray-800 border border-gray-700 text-white rounded-lg p-3 focus:ring-blue-500 focus:border-blue-500">
+                  </div>
+                  <div>
+                    <label for="phone" class="block text-sm font-medium text-gray-300 mb-2">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required class="w-full bg-gray-800 border border-gray-700 text-white rounded-lg p-3 focus:ring-blue-500 focus:border-blue-500">
+                  </div>
+                  <div>
+                    <label for="countryOfResidence" class="block text-sm font-medium text-gray-300 mb-2">Country of Residence</label>
+                    <input type="text" id="countryOfResidence" name="countryOfResidence" required class="w-full bg-gray-800 border border-gray-700 text-white rounded-lg p-3 focus:ring-blue-500 focus:border-blue-500">
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 2: Reason for Inquiry -->
+              <div id="step-2" class="form-step">
+                 <h3 class="text-2xl font-semibold text-white mb-6">What is your primary goal?</h3>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label>
+                        <input type="radio" name="primaryGoal" value="Work in Canada" class="sr-only">
+                        <div class="radio-card p-6 bg-gray-800 border-2 border-gray-700 rounded-lg cursor-pointer">Work in Canada</div>
+                    </label>
+                    <label>
+                        <input type="radio" name="primaryGoal" value="Study in Canada" class="sr-only">
+                        <div class="radio-card p-6 bg-gray-800 border-2 border-gray-700 rounded-lg cursor-pointer">Study in Canada</div>
+                    </label>
+                    <label>
+                        <input type="radio" name="primaryGoal" value="Join Family" class="sr-only">
+                        <div class="radio-card p-6 bg-gray-800 border-2 border-gray-700 rounded-lg cursor-pointer">Join Family in Canada</div>
+                    </label>
+                    <label>
+                        <input type="radio" name="primaryGoal" value="Visit Canada" class="sr-only">
+                        <div class="radio-card p-6 bg-gray-800 border-2 border-gray-700 rounded-lg cursor-pointer">Visit Canada</div>
+                    </label>
+                     <label>
+                        <input type="radio" name="primaryGoal" value="Invest/Start a Business" class="sr-only">
+                        <div class="radio-card p-6 bg-gray-800 border-2 border-gray-700 rounded-lg cursor-pointer">Invest / Start a Business</div>
+                    </label>
+                     <label>
+                        <input type="radio" name="primaryGoal" value="Other" class="sr-only">
+                        <div class="radio-card p-6 bg-gray-800 border-2 border-gray-700 rounded-lg cursor-pointer">Other</div>
+                    </label>
+                 </div>
+              </div>
 
-            // Multi-step form logic
-            const steps = document.querySelectorAll('.form-step');
-            const progressSteps = document.querySelectorAll('.progress-step');
-            const progressLineFill = document.getElementById('progress-line-fill');
-            let currentStep = 1;
+              <!-- Step 3: Work Experience (Conditional) -->
+              <div id="step-3" class="form-step">
+                <h3 class="text-2xl font-semibold text-white mb-6">Professional Background</h3>
+                <div>
+                  <label for="workExperience" class="block text-sm font-medium text-gray-300 mb-2">Years of Skilled Work Experience</label>
+                  <select id="workExperience" name="workExperience" class="w-full bg-gray-800 border border-gray-700 text-white rounded-lg p-3 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="None">None</option>
+                    <option value="1 year">1 year</option>
+                    <option value="2 years">2 years</option>
+                    <option value="3 years">3 years</option>
+                    <option value="4 years">4 years</option>
+                    <option value="5+ years">5+ years</option>
+                  </select>
+                </div>
+                <div class="mt-6">
+                   <label for="occupation" class="block text-sm font-medium text-gray-300 mb-2">Primary Occupation / Field of Work</label>
+                   <input type="text" id="occupation" name="occupation" class="w-full bg-gray-800 border border-gray-700 text-white rounded-lg p-3 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+              </div>
+              
+              <!-- Step 4: Education (Conditional) -->
+              <div id="step-4" class="form-step">
+                <h3 class="text-2xl font-semibold text-white mb-6">Education</h3>
+                <div>
+                  <label for="educationLevel" class="block text-sm font-medium text-gray-300 mb-2">Highest Level of Education</label>
+                  <select id="educationLevel" name="educationLevel" class="w-full bg-gray-800 border border-gray-700 text-white rounded-lg p-3 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="High School">High School Diploma</option>
+                    <option value="Trade Certificate">Trade/Vocational Certificate</option>
+                    <option value="Diploma">Diploma (1-2 years)</option>
+                    <option value="Bachelor's Degree">Bachelor's Degree</option>
+                    <option value="Master's Degree">Master's Degree</option>
+                    <option value="PhD">Doctorate (PhD)</option>
+                  </select>
+                </div>
+              </div>
 
-            const updateFormSteps = () => {
-                steps.forEach(step => {
-                    step.classList.toggle('active', parseInt(step.dataset.step) === currentStep);
-                });
+              <!-- Step 5: Financial Information (Conditional) -->
+              <div id="step-5" class="form-step">
+                <h3 class="text-2xl font-semibold text-white mb-6">Financial Capacity</h3>
+                <p class="text-gray-400 mb-4">This helps determine eligibility for certain programs. Your information is kept confidential.</p>
+                 <div>
+                  <label for="proofOfFunds" class="block text-sm font-medium text-gray-300 mb-2">Available Settlement Funds (in CAD)</label>
+                  <select id="proofOfFunds" name="proofOfFunds" class="w-full bg-gray-800 border border-gray-700 text-white rounded-lg p-3 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="<15000">Less than $15,000</option>
+                    <option value="15000-25000">$15,000 - $25,000</option>
+                    <option value="25000-50000">$25,000 - $50,000</option>
+                    <option value="50000-100000">$50,000 - $100,000</option>
+                    <option value=">100000">More than $100,000</option>
+                  </select>
+                </div>
+              </div>
+              
+              <!-- Step 6: Fee Assessment & Payment -->
+              <div id="step-6" class="form-step">
+                <h3 class="text-2xl font-semibold text-white mb-2">Consultation Fee</h3>
+                <p class="text-gray-400 mb-6">To proceed with a full consultation with our RCIC, a fee is required. This covers the detailed assessment of your profile and a personalized strategy session.</p>
+                <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 text-center mb-6">
+                    <p class="text-lg text-gray-300">Total Consultation Fee</p>
+                    <p class="text-4xl font-extrabold text-white">C$1,000.00</p>
+                </div>
                 
-                progressSteps.forEach((step, index) => {
-                    step.classList.toggle('active', index < currentStep);
-                });
-                
-                const progressPercentage = ((currentStep - 1) / (steps.length - 1)) * 100;
-                progressLineFill.style.width = `${progressPercentage}%`;
-            };
+                <h4 class="text-xl font-semibold text-white mb-4">Secure Payment</h4>
+                <div id="payment-element" class="mb-4">
+                  <!-- A Stripe Element will be inserted here. -->
+                </div>
+                <div id="payment-message" class="hidden text-red-400 mb-4"></div>
+              </div>
 
-            const fieldTemplates = {
-                'Work in Canada': `
-                    <div><label class="font-medium">Highest Level of Education</label><select name="education" class="mt-1 block w-full p-3 border border-gray-300 rounded-md"><option>High School</option><option>Diploma/Certificate</option><option>Bachelor's Degree</option><option>Master's Degree</option><option>PhD</option></select></div>
-                    <div><label class="font-medium">Years of Skilled Work Experience</label><select name="experience" class="mt-1 block w-full p-3 border border-gray-300 rounded-md"><option>Less than 1 year</option><option>1-2 years</option><option>3-5 years</option><option>5+ years</option></select></div>
-                `,
-                'Study in Canada': `
-                    <div><label class="font-medium">Desired Field of Study</label><input type="text" name="fieldOfStudy" class="mt-1 block w-full p-3 border border-gray-300 rounded-md"></div>
-                    <div><label class="font-medium">Do you have an acceptance letter?</label><select name="acceptanceLetter" class="mt-1 block w-full p-3 border border-gray-300 rounded-md"><option>Yes</option><option>No</option></select></div>
-                `,
-                'Join Family': `
-                     <div><label class="font-medium">Relationship to Sponsor</label><input type="text" name="relationship" placeholder="e.g., Spouse, Parent" class="mt-1 block w-full p-3 border border-gray-300 rounded-md"></div>
-                     <div><label class="font-medium">Sponsor's Status in Canada</label><select name="sponsorStatus" class="mt-1 block w-full p-3 border border-gray-300 rounded-md"><option>Permanent Resident</option><option>Canadian Citizen</option></select></div>
-                `,
-                'Business/Invest': `
-                     <div><label class="font-medium">Net Worth (CAD)</label><select name="netWorth" class="mt-1 block w-full p-3 border border-gray-300 rounded-md"><option>$100,000 - $250,000</option><option>$250,000 - $500,000</option><option>$500,000+</option></select></div>
-                     <div><label class="font-medium">Years of Business Management Experience</label><input type="number" name="managementExperience" class="mt-1 block w-full p-3 border border-gray-300 rounded-md"></div>
-                `
-            };
-            
-            document.querySelector('input[name="goal"]').addEventListener('change', () => {
-                 const selectedGoal = document.querySelector('input[name="goal"]:checked').value;
-                 document.getElementById('dynamic-fields').innerHTML = fieldTemplates[selectedGoal] || '';
-            });
 
-            document.getElementById('multiStepForm').addEventListener('click', (e) => {
-                if (e.target.matches('.next-btn')) {
-                    if (currentStep < steps.length - 1) { // -1 because last step is submission
-                        currentStep++;
-                        updateFormSteps();
-                    }
-                } else if (e.target.matches('.prev-btn')) {
-                    if (currentStep > 1) {
-                        currentStep--;
-                        updateFormSteps();
-                    }
-                }
-            });
+              <!-- Navigation Buttons -->
+              <div class="mt-8 flex justify-between items-center">
+                <button type="button" id="prev-btn" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300" style="display: none;">Back</button>
+                <button type="button" id="next-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ml-auto">Next</button>
+                <button type="submit" id="submit-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ml-auto" style="display: none;">Pay & Submit</button>
+              </div>
+            </form>
+          </div>
+          <!-- Success/Loading Message -->
+          <div id="form-feedback" class="hidden text-center p-8">
+             <div id="loading-spinner" class="hidden animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+             <h3 id="feedback-title" class="text-2xl font-bold text-white"></h3>
+             <p id="feedback-message" class="text-gray-300 mt-2"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-            // Form submission
-            const form = document.getElementById('assessment-form');
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                currentStep = steps.length;
-                updateFormSteps();
+  <!-- Footer -->
+  <footer class="bg-black border-t border-gray-800">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-gray-400">
+      <p>&copy; 2024 Culye Immigration Services Inc. All rights reserved.</p>
+      <p class="text-sm mt-2">Based in Edmonton, Alberta. Serving clients globally.</p>
+    </div>
+  </footer>
 
-                const formData = new FormData(form);
-                const data = Object.fromEntries(formData.entries());
-                const submissionStatusDiv = document.getElementById('form-submission-status');
-                
-                // IMPORTANT: Replace this URL with your own Google Apps Script Web App URL
-                const scriptURL = 'https://script.google.com/macros/s/AKfycbypDO8S-E4kgHc2oZIuKeO2FTuLRlJJbU29j_9gXd67mR98KDIHBD8EUMJMkYlj_N8Qlw/exec'; // Replace with your URL
+  <script>
+    // Mobile Menu Toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      mobileMenuButton.querySelector('svg:first-child').classList.toggle('hidden');
+      mobileMenuButton.querySelector('svg:last-child').classList.toggle('block');
+    });
 
-                fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-                    .then(response => {
-                        console.log('Success!', response);
-                        submissionStatusDiv.innerHTML = `
-                            <i class="fas fa-check-circle text-5xl text-green-500"></i>
-                            <h3 class="text-2xl font-bold mt-4">Thank You!</h3>
-                            <p class="text-gray-600 mt-2">Your assessment has been received. Our team will review your information and contact you within 2 business days.</p>
-                        `;
-                    })
-                    .catch(error => {
-                        console.error('Error!', error.message);
-                         submissionStatusDiv.innerHTML = `
-                            <i class="fas fa-times-circle text-5xl text-red-500"></i>
-                            <h3 class="text-2xl font-bold mt-4">Submission Failed</h3>
-                            <p class="text-gray-600 mt-2">Sorry, there was an error submitting your form. Please try again later or contact us directly.</p>
-                        `;
-                    });
-            });
-
-            updateFormSteps();
+    // Header scroll effect
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('bg-gray-900', 'shadow-lg');
+        header.classList.remove('bg-gray-900/80');
+      } else {
+        header.classList.remove('bg-gray-900', 'shadow-lg');
+        header.classList.add('bg-gray-900/80');
+      }
+    });
+    
+    // Smooth scroll for nav links
+    function smoothScroll(target) {
+        document.querySelector(target).scrollIntoView({
+            behavior: 'smooth'
         });
-    </script>
+    }
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const href = this.getAttribute('href');
+            smoothScroll(href);
+            if(mobileMenu.classList.contains('hidden') === false){
+                mobileMenu.classList.add('hidden');
+                mobileMenuButton.querySelector('svg:first-child').classList.remove('hidden');
+                mobileMenuButton.querySelector('svg:last-child').classList.add('hidden');
+            }
+        });
+    });
+
+    // Multi-step form logic
+    const steps = Array.from(document.querySelectorAll('.form-step'));
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const submitBtn = document.getElementById('submit-btn');
+    const form = document.getElementById('assessment-form');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const progressPercent = document.getElementById('progress-percent');
+    
+    const formContainer = document.getElementById('assessment-form-container');
+    const formFeedback = document.getElementById('form-feedback');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const feedbackTitle = document.getElementById('feedback-title');
+    const feedbackMessage = document.getElementById('feedback-message');
+
+
+    let currentStep = 0;
+    const totalSteps = steps.length;
+
+    const stepConditions = {
+        'Work in Canada': [0, 1, 2, 3, 4, 5],
+        'Study in Canada': [0, 1, 3, 4, 5],
+        'Invest/Start a Business': [0, 1, 2, 4, 5],
+        'Join Family': [0, 1, 5],
+        'Visit Canada': [0, 1, 5],
+        'Other': [0, 1, 5],
+    };
+
+    let activeSteps = [];
+    
+    function calculateActiveSteps() {
+        const primaryGoal = document.querySelector('input[name="primaryGoal"]:checked');
+        const goalValue = primaryGoal ? primaryGoal.value : 'Work in Canada'; // Default path
+        activeSteps = stepConditions[goalValue].map(i => steps[i]);
+    }
+
+    function updateFormView() {
+        steps.forEach(step => step.classList.remove('active'));
+        activeSteps[currentStep].classList.add('active');
+
+        const totalActiveSteps = activeSteps.length;
+        const progress = ((currentStep) / (totalActiveSteps - 1)) * 100;
+
+        progressBar.style.width = `${progress}%`;
+        progressText.textContent = `Step ${currentStep + 1} of ${totalActiveSteps}`;
+        progressPercent.textContent = `${Math.round(progress)}%`;
+
+        prevBtn.style.display = currentStep > 0 ? 'inline-block' : 'none';
+        nextBtn.style.display = currentStep < totalActiveSteps - 1 ? 'inline-block' : 'none';
+        submitBtn.style.display = currentStep === totalActiveSteps - 1 ? 'inline-block' : 'none';
+    }
+    
+    function validateStep() {
+        const currentStepInputs = activeSteps[currentStep].querySelectorAll('input[required], select[required]');
+        for (let input of currentStepInputs) {
+            if (!input.value) {
+                input.focus();
+                // You can add a more visible error message here
+                console.log(`Please fill out the ${input.name} field.`);
+                return false;
+            }
+        }
+        
+        const currentStepRadios = activeSteps[currentStep].querySelectorAll('input[type="radio"]');
+        if (currentStepRadios.length > 0) {
+            const isChecked = Array.from(currentStepRadios).some(radio => radio.checked);
+            if (!isChecked) {
+                console.log("Please select an option.");
+                return false;
+            }
+        }
+        
+        return true;
+    }
+
+    nextBtn.addEventListener('click', () => {
+        if (validateStep()) {
+            if (currentStep === 1) { // After selecting primary goal
+                calculateActiveSteps();
+            }
+            if (currentStep < activeSteps.length - 1) {
+                currentStep++;
+                updateFormView();
+            }
+        }
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentStep > 0) {
+            currentStep--;
+             if (currentStep === 1) { // Recalculate if going back to goal selection
+                calculateActiveSteps();
+            }
+            updateFormView();
+        }
+    });
+    
+    document.querySelectorAll('input[name="primaryGoal"]').forEach(radio => {
+        radio.addEventListener('change', calculateActiveSteps);
+    });
+
+    // Initialize form
+    calculateActiveSteps();
+    updateFormView();
+
+    // --- STRIPE AND SUBMISSION LOGIC ---
+    const stripePublicKey = "pk_test_..."; // REPLACE with your Stripe Publishable Key
+    const functionUrl = "https://your-function-url..."; // REPLACE with your Firebase Function URL
+
+    if (!stripePublicKey || stripePublicKey.includes("...")) {
+      console.warn("Stripe public key is not set. Payment form will not work.");
+    }
+    if (!functionUrl || functionUrl.includes("...")) {
+      console.warn("Firebase function URL is not set. Payment form will not work.");
+    }
+
+    const stripe = Stripe(stripePublicKey);
+    let elements;
+
+    // Initialize Stripe Elements
+    async function initializeStripe() {
+      try {
+        const response = await fetch(functionUrl, { method: "POST" });
+        const { clientSecret } = await response.json();
+        
+        elements = stripe.elements({ clientSecret });
+        const paymentElement = elements.create("payment");
+        paymentElement.mount("#payment-element");
+      } catch (error) {
+        console.error("Error initializing Stripe:", error);
+        document.getElementById("payment-message").textContent = "Could not initialize payment. Please refresh and try again.";
+        document.getElementById("payment-message").classList.remove('hidden');
+      }
+    }
+
+    // Call initializeStripe when the payment step is about to be shown.
+    const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+            initializeStripe();
+            observer.disconnect(); // Only initialize once
+        }
+    }, { threshold: 0.1 });
+    observer.observe(document.getElementById('step-6'));
+
+
+    // Handle form submission
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // --- Show loading state ---
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Processing...';
+        loadingSpinner.classList.remove('hidden');
+        
+        // --- Stripe payment confirmation ---
+        const { error: stripeError } = await stripe.confirmPayment({
+            elements,
+            confirmParams: {
+                // Return URL is not strictly needed here as we handle the response directly,
+                // but it's good practice.
+                return_url: window.location.href,
+            },
+            redirect: "if_required" // This prevents the redirect
+        });
+        
+        if (stripeError) {
+            document.getElementById("payment-message").textContent = stripeError.message;
+            document.getElementById("payment-message").classList.remove('hidden');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Pay & Submit';
+            loadingSpinner.classList.add('hidden');
+            return;
+        }
+
+        // --- Payment was successful, now submit to Google Sheet ---
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        data.timestamp = new Date().toISOString();
+        data.feePaid = "C$1000.00";
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbypDO8S-E4kgHc2oZIuKeO2FTuLRlJJbU29j_9gXd67mR98KDIHBD8EUMJMkYlj_N8Qlw/exec';
+        
+        try {
+            const response = await fetch(scriptURL, { method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json'} });
+            const result = await response.json();
+
+            if(result.result === 'success') {
+                formContainer.classList.add('hidden');
+                feedbackTitle.textContent = "Assessment Submitted!";
+                feedbackMessage.textContent = "Thank you! Your information and payment have been received. We will contact you within 2 business days to schedule your consultation.";
+                formFeedback.classList.remove('hidden');
+            } else {
+                 throw new Error(result.error || 'Unknown error submitting to Google Sheet.');
+            }
+        } catch (error) {
+            console.error('Error submitting to Google Sheet:', error);
+            // Even if sheet fails, payment was successful. Provide a success message with a note.
+            formContainer.classList.add('hidden');
+            feedbackTitle.textContent = "Payment Successful!";
+            feedbackMessage.textContent = "Your payment was processed successfully. However, there was an issue recording your details. Please contact us directly and mention your payment. We will assist you promptly.";
+            formFeedback.classList.remove('hidden');
+        }
+
+    });
+  </script>
 
 </body>
 </html>
