@@ -85,6 +85,30 @@
     .price-update {
       transition: all 0.3s ease-in-out;
     }
+    .scroll-hint {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0.7;
+      animation: bounce 2s infinite;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+    .scroll-hint:hover {
+      opacity: 1;
+    }
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateX(-50%) translateY(0);
+      }
+      40% {
+        transform: translateX(-50%) translateY(-10px);
+      }
+      60% {
+        transform: translateX(-50%) translateY(-5px);
+      }
+    }
   </style>
 </head>
 <body class="bg-gray-900 text-gray-200">
@@ -159,6 +183,16 @@
       <button onclick="smoothScroll('#contact')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg text-lg transition duration-300 transform hover:scale-105 shadow-lg">
         Start Your Assessment
       </button>
+    </div>
+    
+    <!-- Scroll Hint -->
+    <div class="scroll-hint z-20" onclick="smoothScroll('#about')">
+      <div class="flex flex-col items-center text-white">
+        <span class="text-sm mb-2 font-medium">Scroll to explore</span>
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
+      </div>
     </div>
   </section>
 
@@ -452,13 +486,52 @@
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer class="bg-black border-t border-gray-800">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-gray-400">
-      <p>&copy; 2024 Culye Immigration Services Inc. All rights reserved.</p>
-      <p class="text-sm mt-2">Based in Edmonton, Alberta. Serving clients globally.</p>
+ <!-- Footer -->
+<footer class="bg-black border-t border-gray-800">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex flex-col items-center space-y-4">
+      
+      <!-- Social Media Links -->
+      <div class="flex space-x-6">
+        <a href="https://www.youtube.com/channel/UCVxVhsXkaVeKKuerb0ry9gA?view_as=subscriber" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition duration-300">
+          <span class="sr-only">YouTube</span>
+          <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M23.498 6.186a2.83 2.83 0 0 0-2.003-2.003C19.622 3.7 12 3.7 12 3.7s-7.622 0-9.495.483A2.83 2.83 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a2.83 2.83 0 0 0 2.003 2.003C4.378 20.3 12 20.3 12 20.3s7.622 0 9.495-.483a2.83 2.83 0 0 0 2.003-2.003C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+        </a>
+        
+        <a href="https://www.facebook.com/culyeimmigrationInc/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition duration-300">
+          <span class="sr-only">Facebook</span>
+          <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+        </a>
+        
+        <a href="https://x.com/Culye_immigrate" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition duration-300">
+          <span class="sr-only">X (Twitter)</span>
+          <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </a>
+
+        <a href="https://www.instagram.com/culyeimmigrationservices/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition duration-300">
+          <span class="sr-only">Instagram</span>
+          <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zm9.75 1.5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V6.25a.75.75 0 0 1 .75-.75zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/>
+          </svg>
+        </a>
+      </div>
+      
+      <!-- Copyright -->
+      <div class="text-center text-gray-400">
+        <p>&copy; 2024 Culye Immigration Services Inc. All rights reserved.</p>
+        <p class="text-sm mt-2">Based in Edmonton, Alberta. Serving clients globally.</p>
+      </div>
+      
     </div>
-  </footer>
+  </div>
+</footer>
+
 
   <script>
     // Global error handler
@@ -493,16 +566,26 @@
       });
     }
 
-    // Header scroll effect
+    // Header scroll effect with mobile menu auto-dismiss
     const header = document.getElementById('header');
     if (header) {
       window.addEventListener('scroll', () => {
+        // Header background effect
         if (window.scrollY > 50) {
           header.classList.add('bg-gray-900', 'shadow-lg');
           header.classList.remove('bg-gray-900/80');
         } else {
           header.classList.remove('bg-gray-900', 'shadow-lg');
           header.classList.add('bg-gray-900/80');
+        }
+        
+        // Auto-dismiss mobile menu when scrolling
+        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+          mobileMenu.classList.add('hidden');
+          const firstSvg = mobileMenuButton.querySelector('svg:first-child');
+          const lastSvg = mobileMenuButton.querySelector('svg:last-child');
+          if (firstSvg) firstSvg.classList.remove('hidden');
+          if (lastSvg) lastSvg.classList.add('hidden');
         }
       });
     }
