@@ -1365,7 +1365,7 @@ const { error: submitError } = await elements.submit();
             return;
           }
 
-          // Payment successful, submit to Google Sheet
+          // Payment successful, submit to Google Sheet.
           const formData = new FormData(form);
           const data = Object.fromEntries(formData.entries());
           data.timestamp = new Date().toISOString();
