@@ -1366,8 +1366,37 @@ const { error: submitError } = await elements.submit();
           }
 
           // Payment successful, submit to Google Sheet.
-          const formData = new FormData(form);
-          const data = Object.fromEntries(formData.entries());
+const data = {
+  // Personal Information (Step 1)
+  fullName: document.getElementById('fullName')?.value || '',
+  email: document.getElementById('email')?.value || '',
+  phone: document.getElementById('phone')?.value || '',
+  countryOfResidence: document.getElementById('countryOfResidence')?.value || '',
+  
+  // Primary Goal (Step 2)
+  primaryGoal: document.querySelector('input[name="primaryGoal"]:checked')?.value || '',
+  
+  // Education (Step 3)
+  educationLevel: document.getElementById('educationLevel')?.value || '',
+  fieldOfStudy: document.getElementById('fieldOfStudy')?.value || '',
+  hasAcceptanceLetter: document.querySelector('input[name="hasAcceptanceLetter"]:checked')?.value || '',
+  
+  // Work Experience (Step 4)
+  workExperience: document.getElementById('workExperience')?.value || '',
+  mgmtExperience: document.getElementById('mgmtExperience')?.value || '',
+  occupation: document.getElementById('occupation')?.value || '',
+  
+  // Family/Sponsorship (Step 5)
+  sponsorRelationship: document.querySelector('input[name="sponsorRelationship"]:checked')?.value || '',
+  sponsorStatus: document.querySelector('input[name="sponsorStatus"]:checked')?.value || '',
+  
+  // Financial (Step 6)
+  proofOfFunds: document.getElementById('proofOfFunds')?.value || '',
+  netWorth: document.getElementById('netWorth')?.value || '',
+  
+  // Additional Notes (Step 7)
+  additionalNotes: document.getElementById('additionalNotes')?.value || ''
+};
           data.timestamp = new Date().toISOString();
           data.serviceType = currentServiceType;
           data.feePaid = `C$${pricingTable[currentServiceType].price.toLocaleString()}.00`;
