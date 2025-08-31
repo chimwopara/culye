@@ -836,7 +836,10 @@
         
         currentClientSecret = result.clientSecret;
         
-        elements = stripe.elements({ clientSecret: currentClientSecret });
+        if (!currentClientSecret) {
+    throw new Error('No client secret received from server');
+}
+elements = stripe.elements({ clientSecret: currentClientSecret });
         const paymentElement = elements.create("payment");
         paymentElement.mount("#payment-element");
         
@@ -864,14 +867,30 @@
           }
           if (loadingSpinner) loadingSpinner.classList.remove('hidden');
           
-          // Confirm payment with Stripe
-          const { error: stripeError } = await stripe.confirmPayment({
+          // Check if Stripe is properly initialized
+        if (!elements || !currentClientSecret) {
+            const paymentMessage = document.getElementById("payment-message");
+            if (paymentMessage) {
+                paymentMessage.textContent = "Payment system not ready. Please wait a moment and try again.";
+                paymentMessage.classList.remove('hidden');
+            }
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Pay & Submit';
+            }
+            if (loadingSpinner) loadingSpinner.classList.add('hidden');
+            return;
+        }
+
+        // Confirm payment with Stripe
+        const { error: stripeError } = await stripe.confirmPayment({
             elements,
+            clientSecret: currentClientSecret,
             confirmParams: {
-              return_url: window.location.href,
+                return_url: window.location.href,
             },
             redirect: "if_required"
-          });
+        });
           
           if (stripeError) {
             const paymentMessage = document.getElementById("payment-message");
