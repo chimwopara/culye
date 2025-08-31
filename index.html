@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://cdn.tailwindcss.com; connect-src 'self' https://api.stripe.com https://script.google.com https://us-central1-culye-57a22.cloudfunctions.net; frame-src 'self' https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://cdn.tailwindcss.com https://fonts.googleapis.com; connect-src 'self' https://api.stripe.com https://script.google.com https://us-central1-culye-57a22.cloudfunctions.net https://fonts.googleapis.com; frame-src 'self' https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:;">
   <title>Culye Immigration Services | Your Bridge to Canada</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://js.stripe.com/v3/" crossorigin="anonymous"></script>
@@ -844,8 +844,14 @@
 
 
   <script>
-    // Global error handler
-    window.addEventListener('error', function(e) {
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeEverything();
+    });
+    
+    function initializeEverything() {
+        // Global error handler
+        window.addEventListener('error', function(e) {
       console.error('JavaScript Error:', e.error || e.message);
       console.error('Error details:', {
         message: e.message,
@@ -1510,7 +1516,7 @@ try {
           if (loadingSpinner) loadingSpinner.classList.add('hidden');
         }
       });
-    }
+    }}
   </script>
 
 </body>
