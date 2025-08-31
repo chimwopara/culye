@@ -882,15 +882,30 @@ elements = stripe.elements({ clientSecret: currentClientSecret });
             return;
         }
 
-        // Confirm payment with Stripe
-        const { error: stripeError } = await stripe.confirmPayment({
+        // Submit payment elements first (required by Stripe)
+          const { error: submitError } = await elements.submit();
+          if (submitError) {
+            const paymentMessage = document.getElementById("payment-message");
+            if (paymentMessage) {
+              paymentMessage.textContent = submitError.message;
+              paymentMessage.classList.remove('hidden');
+            }
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'Pay & Submit';
+            }
+            if (loadingSpinner) loadingSpinner.classList.add('hidden');
+            return;
+          }
+
+          // Confirm payment with Stripe
+          const { error: stripeError } = await stripe.confirmPayment({
             elements,
-            clientSecret: currentClientSecret,
             confirmParams: {
-                return_url: window.location.href,
+              return_url: window.location.href,
             },
             redirect: "if_required"
-        });
+          });
           
           if (stripeError) {
             const paymentMessage = document.getElementById("payment-message");
