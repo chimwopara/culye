@@ -1404,6 +1404,16 @@ const data = {
           data.paymentStatus = 'Paid';
 
           const scriptURL = 'https://script.google.com/macros/s/AKfycbwSQiodL0QZBWYQ1BeNTZ-ph7Nh1x6JoQ1BZ28L3y_I1lBN_7BeY4nk2gMIkWcEIsDlgg/exec';
+
+// Test the URL first
+console.log('Testing script URL...');
+try {
+  const testResponse = await fetch(scriptURL);
+  const testText = await testResponse.text();
+  console.log('Script URL test result:', testText);
+} catch (testError) {
+  console.error('Script URL test failed:', testError);
+}
           
           try {
             const response = await fetch(scriptURL, { 
@@ -1423,8 +1433,16 @@ const data = {
               throw new Error(result.error || 'Unknown error submitting to Google Sheet.');
             }
           } catch (error) {
-            console.error('Error submitting to Google Sheet:', error);
-            // Payment was successful even if sheet submission failed
+  console.error('Detailed error submitting to Google Sheet:', error);
+  console.error('Error name:', error.name);
+  console.error('Error message:', error.message);
+  console.error('Data being sent:', JSON.stringify(data, null, 2));
+  
+  // Try to get more details from the response if it exists
+  if (error.response) {
+    console.error('Response status:', error.response.status);
+    console.error('Response text:', await error.response.text());
+  }
             if (formContainer) formContainer.classList.add('hidden');
             if (feedbackTitle) feedbackTitle.textContent = "Payment Successful!";
             if (feedbackMessage) feedbackMessage.textContent = "Your payment was processed successfully. However, there was an issue recording your details. Please contact us directly at your earliest convenience. We will assist you promptly.";
