@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://cdn.tailwindcss.com https://fonts.googleapis.com; connect-src 'self' https://api.stripe.com https://script.google.com https://us-central1-culye-57a22.cloudfunctions.net https://fonts.googleapis.com; frame-src 'self' https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:;">
   <title>Culye Immigration Services | Your Bridge to Canada</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://js.stripe.com/v3/" crossorigin="anonymous"></script>
@@ -776,7 +775,6 @@
                 <div id="payment-message" class="hidden text-red-400 mb-4"></div>
               </div>
 
-
               <!-- Navigation Buttons -->
               <div class="mt-8 flex justify-between items-center">
                 <button type="button" id="prev-btn" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300" style="display: none;">Back</button>
@@ -842,7 +840,6 @@
   </div>
 </footer>
 
-
   <script>
     // Wait for DOM to be fully loaded
     document.addEventListener('DOMContentLoaded', function() {
@@ -850,18 +847,6 @@
     });
     
     function initializeEverything() {
-        // Global error handler
-        window.addEventListener('error', function(e) {
-      console.error('JavaScript Error:', e.error || e.message);
-      console.error('Error details:', {
-        message: e.message,
-        filename: e.filename,
-        lineno: e.lineno,
-        colno: e.colno,
-        error: e.error
-      });
-    });
-
     // Check if required libraries are loaded
     if (typeof Stripe === 'undefined') {
       console.error('Stripe.js failed to load');
@@ -907,7 +892,7 @@
     }
     
     // Smooth scroll for nav links
-    function smoothScroll(target) {
+    window.smoothScroll = function(target) {
       const element = document.querySelector(target);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
@@ -972,6 +957,25 @@
     };
 
     let activeSteps = [];
+
+    // Helper function to collect all form data
+    function collectFormData() {
+      return {
+        // Only collect fields that match Google Sheet headers
+        fullName: document.getElementById('fullName')?.value || '',
+        email: document.getElementById('email')?.value || '',
+        phone: document.getElementById('phone')?.value || '',
+        countryOfResidence: document.getElementById('countryOfResidence')?.value || '',
+        primaryGoal: document.querySelector('input[name="primaryGoal"]:checked')?.value || '',
+        educationLevel: document.getElementById('educationLevel')?.value || '',
+        workExperience: document.getElementById('workExperience')?.value || '',
+        occupation: document.getElementById('occupation')?.value || '',
+        proofOfFunds: document.getElementById('proofOfFunds')?.value || '',
+        serviceType: currentServiceType,
+        feePaid: `C$${pricingTable[currentServiceType].price.toLocaleString()}.00`,
+        timestamp: new Date().toISOString()
+      };
+    }
     
     function calculateActiveSteps() {
       try {
@@ -1062,7 +1066,6 @@
     }
 
     function showValidationMessage(message) {
-      // You can customize this to show a nicer validation message
       alert(message);
     }
 
@@ -1301,40 +1304,43 @@
         e.preventDefault();
         
         try {
+          // Collect form data first
+          const data = collectFormData();
+          
           // Show loading state
-if (submitBtn) {
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Processing Payment...';
-}
-if (loadingSpinner) loadingSpinner.classList.remove('hidden');
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing Payment...';
+          }
+          if (loadingSpinner) loadingSpinner.classList.remove('hidden');
 
-// Check if Stripe is properly initialized
-if (!elements || !currentClientSecret) {
-  // Try to initialize Stripe again
-  try {
-    await initializeStripe();
-    await new Promise(resolve => setTimeout(resolve, 1000));
-  } catch (error) {
-    console.error('Failed to initialize Stripe:', error);
-  }
-  
-  if (!elements || !currentClientSecret) {
-    const paymentMessage = document.getElementById("payment-message");
-    if (paymentMessage) {
-      paymentMessage.textContent = "Payment system not ready. Please wait a moment and try again.";
-      paymentMessage.classList.remove('hidden');
-    }
-    if (submitBtn) {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Pay & Submit';
-    }
-    if (loadingSpinner) loadingSpinner.classList.add('hidden');
-    return;
-  }
-}
+          // Check if Stripe is properly initialized
+          if (!elements || !currentClientSecret) {
+            // Try to initialize Stripe again
+            try {
+              await initializeStripe();
+              await new Promise(resolve => setTimeout(resolve, 1000));
+            } catch (error) {
+              console.error('Failed to initialize Stripe:', error);
+            }
+            
+            if (!elements || !currentClientSecret) {
+              const paymentMessage = document.getElementById("payment-message");
+              if (paymentMessage) {
+                paymentMessage.textContent = "Payment system not ready. Please wait a moment and try again.";
+                paymentMessage.classList.remove('hidden');
+              }
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Pay & Submit';
+              }
+              if (loadingSpinner) loadingSpinner.classList.add('hidden');
+              return;
+            }
+          }
 
-// Submit payment elements first (required by Stripe)
-const { error: submitError } = await elements.submit();
+          // Submit payment elements first (required by Stripe)
+          const { error: submitError } = await elements.submit();
           if (submitError) {
             const paymentMessage = document.getElementById("payment-message");
             if (paymentMessage) {
@@ -1350,26 +1356,7 @@ const { error: submitError } = await elements.submit();
           }
 
           // Confirm payment with Stripe
-          
-          // TEMPORARY: Skip payment for testing and submit directly to Google Sheets
-console.log('Current form data before payment:', data);
-
-// Test Google Sheets submission without payment
-console.log('Testing Google Sheets submission...');
-try {
-  const testResponse = await fetch(scriptURL, { 
-    method: 'POST', 
-    body: JSON.stringify(data), 
-    headers: {'Content-Type': 'application/json'} 
-  });
-  const testResult = await testResponse.text();
-  console.log('Google Sheets test response:', testResult);
-} catch (testError) {
-  console.error('Google Sheets test failed:', testError);
-}
-
-// Continue with normal Stripe payment flow
-const { error: stripeError } = await stripe.confirmPayment({
+          const { error: stripeError } = await stripe.confirmPayment({
             elements,
             confirmParams: {
               return_url: window.location.href,
@@ -1391,82 +1378,8 @@ const { error: stripeError } = await stripe.confirmPayment({
             return;
           }
 
-          // Payment successful, submit to Google Sheet.
-const data = {
-  // Personal Information (Step 1)
-  fullName: document.getElementById('fullName')?.value || '',
-  email: document.getElementById('email')?.value || '',
-  phone: document.getElementById('phone')?.value || '',
-  countryOfResidence: document.getElementById('countryOfResidence')?.value || '',
-  
-  // Primary Goal (Step 2)
-  primaryGoal: document.querySelector('input[name="primaryGoal"]:checked')?.value || '',
-  
-  // Education (Step 3)
-  educationLevel: document.getElementById('educationLevel')?.value || '',
-  fieldOfStudy: document.getElementById('fieldOfStudy')?.value || '',
-  hasAcceptanceLetter: document.querySelector('input[name="hasAcceptanceLetter"]:checked')?.value || '',
-  
-  // Work Experience (Step 4)
-  workExperience: document.getElementById('workExperience')?.value || '',
-  mgmtExperience: document.getElementById('mgmtExperience')?.value || '',
-  occupation: document.getElementById('occupation')?.value || '',
-  
-  // Family/Sponsorship (Step 5)
-  sponsorRelationship: document.querySelector('input[name="sponsorRelationship"]:checked')?.value || '',
-  sponsorStatus: document.querySelector('input[name="sponsorStatus"]:checked')?.value || '',
-  
-  // Financial (Step 6)
-  proofOfFunds: document.getElementById('proofOfFunds')?.value || '',
-  netWorth: document.getElementById('netWorth')?.value || '',
-  
-  // Additional Notes (Step 7)
-  additionalNotes: document.getElementById('additionalNotes')?.value || ''
-};
-          data.timestamp = new Date().toISOString();
-data.serviceType = currentServiceType;
-data.feePaid = `C$${pricingTable[currentServiceType].price.toLocaleString()}.00`;
-data.caseStatus = 'New Submission';
-data.paymentStatus = 'Paid';
-
-
-// CRITICAL DEBUG: Log exactly what we're sending
-console.log('=== WEBSITE DATA BEING SENT ===');
-console.log('Field names from website:', Object.keys(data));
-console.log('Complete data object:', JSON.stringify(data, null, 2));
-
-// EXPECTED GOOGLE SHEET HEADERS (from your screenshot)
-const expectedHeaders = ['fullName', 'email', 'phone', 'countryOfResidence', 'primaryGoal', 'educationLevel', 'workExperience', 'occupation', 'proofOfFunds', 'serviceType', 'feePaid', 'timestamp'];
-console.log('Expected headers:', expectedHeaders);
-
-// Find mismatches
-const websiteFields = Object.keys(data);
-const missingFromWebsite = expectedHeaders.filter(header => !websiteFields.includes(header));
-const extraInWebsite = websiteFields.filter(field => !expectedHeaders.includes(field));
-
-if (missingFromWebsite.length > 0) {
-  console.error('❌ MISSING FROM WEBSITE:', missingFromWebsite);
-}
-if (extraInWebsite.length > 0) {
-  console.error('⚠️ EXTRA IN WEBSITE:', extraInWebsite);
-}
-console.log('=== END DEBUG ===');
-          data.serviceType = currentServiceType;
-          data.feePaid = `C$${pricingTable[currentServiceType].price.toLocaleString()}.00`;
-          data.caseStatus = 'New Submission';
-          data.paymentStatus = 'Paid';
-
+          // Payment successful, submit to Google Sheet
           const scriptURL = 'https://script.google.com/macros/s/AKfycbwSQiodL0QZBWYQ1BeNTZ-ph7Nh1x6JoQ1BZ28L3y_I1lBN_7BeY4nk2gMIkWcEIsDlgg/exec';
-
-// Test the URL first
-console.log('Testing script URL...');
-try {
-  const testResponse = await fetch(scriptURL);
-  const testText = await testResponse.text();
-  console.log('Script URL test result:', testText);
-} catch (testError) {
-  console.error('Script URL test failed:', testError);
-}
           
           try {
             const response = await fetch(scriptURL, { 
@@ -1486,16 +1399,8 @@ try {
               throw new Error(result.error || 'Unknown error submitting to Google Sheet.');
             }
           } catch (error) {
-  console.error('Detailed error submitting to Google Sheet:', error);
-  console.error('Error name:', error.name);
-  console.error('Error message:', error.message);
-  console.error('Data being sent:', JSON.stringify(data, null, 2));
-  
-  // Try to get more details from the response if it exists
-  if (error.response) {
-    console.error('Response status:', error.response.status);
-    console.error('Response text:', await error.response.text());
-  }
+            console.error('Error submitting to Google Sheet:', error);
+            // Payment was successful even if sheet submission failed
             if (formContainer) formContainer.classList.add('hidden');
             if (feedbackTitle) feedbackTitle.textContent = "Payment Successful!";
             if (feedbackMessage) feedbackMessage.textContent = "Your payment was processed successfully. However, there was an issue recording your details. Please contact us directly at your earliest convenience. We will assist you promptly.";
@@ -1516,7 +1421,10 @@ try {
           if (loadingSpinner) loadingSpinner.classList.add('hidden');
         }
       });
-    }}
+    }
+
+    // End of initializeEverything function
+    }
   </script>
 
 </body>
