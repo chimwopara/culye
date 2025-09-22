@@ -3,6 +3,9 @@ const stripePublicKey = "pk_test_51S1hMrPakOX6JEqhZYcA0CldRqEFyXZNYfQE2blJM6C161
 const functionUrl = "https://us-central1-culye-57a22.cloudfunctions.net/createPaymentIntent";
 const scriptURL = 'https://script.google.com/macros/s/AKfycbwSQiodL0QZBWYQ1BeNTZ-ph7Nh1x6JoQ1BZ28L3y_I1lBN_7BeY4nk2gMIkWcEIsDlgg/exec';
 
+
+
+
 let stripe;
 let elements;
 let currentClientSecret = null;
@@ -41,6 +44,7 @@ window.initializeStripe = async function(serviceType) {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
             },
             body: JSON.stringify({
                 serviceType: serviceType

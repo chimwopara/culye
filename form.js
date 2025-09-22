@@ -102,49 +102,67 @@ function initializeForm() {
 
     let activeSteps = [];
 
-    // Helper function to collect all form data
-    
-window.collectFormData = function() {
-    // Helper to get checked radio button values safely
-    const getRadioValue = (name) => {
-        const checkedRadio = document.querySelector(`input[name="${name}"]:checked`);
-        return checkedRadio ? checkedRadio.value : '';
-    };
+    // CORRECTED collectFormData function
+    window.collectFormData = function() {
+        // Helper to get checked radio button values safely
+        const getRadioValue = (name) => {
+            const checkedRadio = document.querySelector(`input[name="${name}"]:checked`);
+            return checkedRadio ? checkedRadio.value : '';
+        };
 
-    return {
-        // Personal Info
-        fullName: document.getElementById('fullName')?.value || '',
-        email: document.getElementById('email')?.value || '',
-        phone: document.getElementById('phone')?.value || '',
-        countryOfResidence: document.getElementById('countryOfResidence')?.value || '',
+        // Get the current primary goal to determine service type and pricing
+        const primaryGoal = getRadioValue('primaryGoal');
         
-        // Immigration Goal & Service Details
-        primaryGoal: getRadioValue('primaryGoal'),
-        serviceType: currentServiceType,
-        feePaid: `C$${pricingTable[currentServiceType].price.toLocaleString()}.00`,
+        // Use the same pricing table structure
+        const pricingTable = {
+            "Work in Canada": { price: 5000, description: "Express Entry & Provincial Nominee Programs" },
+            "Study in Canada": { price: 2750, description: "Study Permit & Educational Institution Support" },
+            "Join Family": { price: 5000, description: "Family Sponsorship & Spousal Applications" },
+            "Visit Canada": { price: 1250, description: "Visitor Visa & Temporary Residence" },
+            "Invest/Start a Business": { price: 9000, description: "Business Class Immigration & Investment Programs" },
+            "Work Permit": { price: 2500, description: "Work Permit Application Support" }
+        };
+        
+        const currentPricing = pricingTable[primaryGoal] || pricingTable["Work Permit"];
 
-        // Education & Work
-        educationLevel: document.getElementById('educationLevel')?.value || '',
-        fieldOfStudy: document.getElementById('fieldOfStudy')?.value || '',
-        hasAcceptanceLetter: getRadioValue('hasAcceptanceLetter'),
-        workExperience: document.getElementById('workExperience')?.value || '',
-        occupation: document.getElementById('occupation')?.value || '',
-        mgmtExperience: document.getElementById('mgmtExperience')?.value || '',
-        
-        // Family & Sponsorship
-        sponsorRelationship: getRadioValue('sponsorRelationship'),
-        sponsorStatus: getRadioValue('sponsorStatus'),
-        
-        // Financial & Additional Info
-        proofOfFunds: document.getElementById('proofOfFunds')?.value || '',
-        netWorth: document.getElementById('netWorth')?.value || '',
-        additionalNotes: document.getElementById('additionalNotes')?.value || '',
-        
-        // System Generated
-        timestamp: new Date().toISOString(),
-        paymentStatus: 'Paid' // This is set automatically on successful payment
-    };
-}
+        const data = {
+            // Personal Info
+            fullName: document.getElementById('fullName')?.value || '',
+            email: document.getElementById('email')?.value || '',
+            phone: document.getElementById('phone')?.value || '',
+            countryOfResidence: document.getElementById('countryOfResidence')?.value || '',
+            
+            // Immigration Goal & Service Details
+            primaryGoal: primaryGoal,
+            serviceType: primaryGoal, // Use primaryGoal directly to match your pricing structure
+            feePaid: currentPricing.price, // Send as number, not formatted string
+
+            // Education & Work
+            educationLevel: document.getElementById('educationLevel')?.value || '',
+            fieldOfStudy: document.getElementById('fieldOfStudy')?.value || '',
+            hasAcceptanceLetter: getRadioValue('hasAcceptanceLetter'),
+            workExperience: document.getElementById('workExperience')?.value || '',
+            occupation: document.getElementById('occupation')?.value || '',
+            mgmtExperience: document.getElementById('mgmtExperience')?.value || '',
+            
+            // Family & Sponsorship
+            sponsorRelationship: getRadioValue('sponsorRelationship'),
+            sponsorStatus: getRadioValue('sponsorStatus'),
+            
+            // Financial & Additional Info
+            proofOfFunds: document.getElementById('proofOfFunds')?.value || '',
+            netWorth: document.getElementById('netWorth')?.value || '',
+            additionalNotes: document.getElementById('additionalNotes')?.value || '',
+            
+            // System Generated
+            caseStatus: 'New',
+            paymentStatus: 'Paid' // This is set automatically on successful payment
+            // Note: timestamp is handled by Google Apps Script
+        };
+
+        console.log('Collected form data:', data);
+        return data;
+    }
     
     function calculateActiveSteps() {
         try {
