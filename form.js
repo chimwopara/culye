@@ -165,16 +165,37 @@ function initializeForm() {
     }
     
     function calculateActiveSteps() {
-        try {
-            const primaryGoal = document.querySelector('input[name="primaryGoal"]:checked');
-            const goalValue = primaryGoal ? primaryGoal.value : 'Work Permit';
-            activeSteps = stepConditions[goalValue].map(i => steps[i]);
-            currentServiceType = goalValue;
-            updatePricing();
-        } catch (error) {
-            console.error('Error calculating active steps:', error);
-        }
+    try {
+        const primaryGoal = document.querySelector('input[name="primaryGoal"]:checked');
+        const goalValue = primaryGoal ? primaryGoal.value : 'Work Permit';
+        activeSteps = stepConditions[goalValue].map(i => steps[i]);
+        currentServiceType = goalValue;
+        updatePricing();
+        updateRequiredFields(); // Add this line
+    } catch (error) {
+        console.error('Error calculating active steps:', error);
     }
+}
+
+    function updateRequiredFields() {
+    // Get all steps
+    steps.forEach((step, index) => {
+        const isActive = activeSteps.includes(step);
+        
+        // Find all required inputs in this step
+        const requiredInputs = step.querySelectorAll('input[required], select[required], textarea[required]');
+        
+        requiredInputs.forEach(input => {
+            if (isActive) {
+                // Step is active - ensure required attribute is present
+                input.setAttribute('required', 'required');
+            } else {
+                // Step is inactive - remove required attribute to prevent validation errors
+                input.removeAttribute('required');
+            }
+        });
+    });
+}
 
     function updatePricing() {
         try {
