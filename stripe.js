@@ -1,7 +1,7 @@
 // Stripe configuration
 const stripePublicKey = "pk_test_51S1hMrPakOX6JEqhZYcA0CldRqEFyXZNYfQE2blJM6C161eZqCkVSC41IVkPTtmzh6eEARu0rNTWcseCg59RWb3Q00tS7RQ6aX";
 const functionUrl = "https://us-central1-culye-57a22.cloudfunctions.net/createPaymentIntent";
-const scriptURL = 'https://script.google.com/macros/s/AKfycbz6fzX_dGUxRTH6WEjGMXo2tyFFmrfXKl15s2WBml0Zr055hcxoeiSwxGfpApMIs3HZLw/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbxU5LfDBqXBgBzFTz1JbNodbtkuk3WG3YNxU9P-3nZCTu8eE2dceUnY7cag5-rWsHlRHg/exec';
 
 
 
