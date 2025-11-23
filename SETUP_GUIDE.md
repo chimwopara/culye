@@ -57,7 +57,7 @@ This system automatically fetches Canadian immigration news every Sunday night, 
    ├── index.html
    ├── index.css
    ├── main.js
-   └── news-loader.js
+   └── news-loader-simple.js
    ```
 
 ### 3. Configure GitHub Secrets
@@ -71,7 +71,7 @@ In your GitHub repository:
 
 ### 4. Update Configuration Files
 
-#### In `news-loader.js`:
+#### In `news-loader-simple.js`:
 Replace these placeholders:
 ```javascript
 const NEWS_API_ENDPOINT = 'https://your-vercel-app.vercel.app/api/news';
@@ -99,7 +99,7 @@ If you don't want to use Vercel:
 1. Enable GitHub Pages in your repository settings
 2. Your news JSON will be available at:
    `https://YOUR_USERNAME.github.io/culye-immigration-news/blog_posts.json`
-3. Update `news-loader.js` to fetch directly from this URL
+3. Update `news-loader-simple.js` to fetch directly from this URL
 
 ## Testing
 
@@ -180,7 +180,7 @@ Edit `news_fetcher.py`:
 - Filter by specific keywords
 
 ### Styling Changes:
-Edit the blog section in `index.html` and styles in `news-loader.js`
+Edit the blog section in `index.html` and styles in `news-loader-simple.js`
 
 ## Security Notes
 

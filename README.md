@@ -12,7 +12,7 @@ Automatically fetches and displays the latest Canadian immigration news on your 
 
 ### Core Files:
 - **`index.html`** - Your updated website with integrated news section
-- **`news-loader.js`** - Advanced news loader with API support
+- **`news-loader-simple.js`** - Advanced news loader with API support
 - **`news-loader-simple.js`** - Simple GitHub Pages version (easier setup)
 - **`news_fetcher.py`** - Python script that fetches and processes news
 - **`.github/workflows/update-news.yml`** - GitHub Actions automation
@@ -28,7 +28,7 @@ Automatically fetches and displays the latest Canadian immigration news on your 
 - Completely free
 
 **Option B: Advanced Version**
-- Use `news-loader.js` + `api/news.js`
+- Use `news-loader-simple.js` + `api/news.js`
 - Requires Vercel account (free tier)
 - Better performance and caching
 - More professional setup
@@ -149,7 +149,7 @@ Edit `news_fetcher.py` to:
 **"Unable to Load News" error:**
 - Check browser console for errors (F12)
 - Verify GitHub repository is public
-- Check URL in news-loader.js is correct
+- Check URL in news-loader-simple.js is correct
 
 ## 🔒 Security Notes
 
