@@ -4,8 +4,6 @@ body {
   color: #e5e7eb;
 }
 
-
-
 .nav-link {
   position: relative;
   transition: color 0.3s;
@@ -27,8 +25,6 @@ body {
   width: 100%;
 }
 
-
-
 @keyframes fade-in-up {
     0% {
         opacity: 0;
@@ -43,7 +39,6 @@ body {
 .animate-fade-in-up {
     animation: fade-in-up 0.8s ease-out forwards;
 }
-
 
 .scroll-hint {
   position: absolute;
@@ -70,4 +65,201 @@ body {
   60% {
     transform: translateX(-50%) translateY(-5px);
   }
+}
+
+/* News Section Styles */
+#news-content {
+  animation: fade-in-up 0.6s ease-out;
+}
+
+.news-content h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.news-content p {
+  margin-bottom: 1rem;
+  line-height: 1.75;
+  color: #d1d5db;
+}
+
+.news-content strong {
+  color: #f3f4f6;
+  font-weight: 600;
+}
+
+.news-content a {
+  color: #60a5fa;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.news-content a:hover {
+  color: #93bbfc;
+}
+
+/* Loading animation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* News grid hover effects */
+#news-grid .group:hover {
+  transform: translateY(-2px);
+}
+
+/* Featured article image overlay */
+#featured-article img {
+  transition: transform 0.3s ease;
+}
+
+#featured-article:hover img {
+  transform: scale(1.02);
+}
+
+/* Prose styling for blog content */
+.prose {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+.prose h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.prose h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose li {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Sources list styling */
+#sources-list a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  transition: background-color 0.2s;
+}
+
+#sources-list a:hover {
+  background-color: rgba(55, 65, 81, 0.5);
+}
+
+/* Subscribe CTA gradient animation */
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.bg-gradient-to-r {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .news-content {
+    font-size: 0.95rem;
+  }
+  
+  #featured-article h3 {
+    font-size: 1.5rem;
+  }
+  
+  #news-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Print styles for blog posts */
+@media print {
+  #news-content {
+    background: white;
+    color: black;
+  }
+  
+  .news-content a {
+    color: black;
+    text-decoration: underline;
+  }
+  
+  #news-loading,
+  #news-error,
+  #news-grid,
+  .subscribe-cta {
+    display: none !important;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+  .news-content {
+    color: #e5e7eb;
+  }
+  
+  .news-content strong {
+    color: #f9fafb;
+  }
+}
+
+/* Custom scrollbar for news content */
+#news-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+#news-content::-webkit-scrollbar-track {
+  background: rgba(31, 41, 55, 0.5);
+  border-radius: 4px;
+}
+
+#news-content::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.5);
+  border-radius: 4px;
+}
+
+#news-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.7);
 }

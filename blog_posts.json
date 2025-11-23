@@ -1,0 +1,43 @@
+[
+  {
+    "id": "sample001",
+    "date": "November 22, 2025",
+    "title": "Canadian Immigration Weekly Update - November 22, 2025",
+    "content": "This week brings several important updates in Canadian immigration that could significantly impact your journey to Canada.\n\n**Express Entry Draw #289 Results**\n\nImmigration, Refugees and Citizenship Canada conducted its latest Express Entry draw on November 20th, inviting 5,900 candidates to apply for permanent residence. The minimum Comprehensive Ranking System score dropped to 478, continuing the downward trend we've seen this month. This draw specifically targeted candidates with French language proficiency and those working in healthcare occupations, which aligns with Canada's current labor market needs.\n\n**Alberta Accelerated Tech Pathway Expansion**\n\nAlberta has announced a significant expansion to its Accelerated Tech Pathway, now including 15 additional occupations in artificial intelligence and cybersecurity fields. The province aims to attract 3,000 tech professionals by the end of Q1 2026. Candidates with job offers from Alberta employers in these fields can now apply with relaxed experience requirements, making this an excellent opportunity for tech professionals considering a move to Canada.\n\n**International Student Work Permit Extensions**\n\nStarting December 1st, international students graduating from designated learning institutions in healthcare, engineering, and skilled trades programs will be eligible for three-year post-graduation work permits instead of the standard two years. This change provides graduates with more time to gain Canadian work experience, which significantly improves their chances of obtaining permanent residence through various immigration programs.\n\nThese updates reflect Canada's strategic approach to immigration, focusing on addressing labor shortages while providing clear pathways for skilled individuals. The emphasis on French speakers, healthcare workers, and tech professionals shows where the greatest opportunities currently lie.\n\nFor those considering Canadian immigration, now is an excellent time to assess your qualifications and explore available pathways. Whether you're a recent graduate, an experienced professional, or someone with specialized skills, understanding these policy changes can help you make informed decisions about your immigration strategy.\n\nOur team at Culye Immigration Services stays current with all immigration updates to provide you with accurate, timely advice. Contact us today for a personalized assessment and let us guide you through your Canadian immigration journey.",
+    "author": "The Culye Team",
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1503614472-8c93d56e92ce?w=1200&q=80",
+        "caption": "Express Entry draws continue with lower scores",
+        "credit": "Photo by John Lee on Unsplash"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80",
+        "caption": "Alberta tech sector expansion creates new opportunities",
+        "credit": "Photo by Alex Knight on Unsplash"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&q=80",
+        "caption": "International students get extended work permits",
+        "credit": "Photo by Priscilla Du Preez on Unsplash"
+      }
+    ],
+    "sources": [
+      {
+        "title": "Express Entry rounds of invitations",
+        "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/rounds-invitations.html",
+        "source": "IRCC Official"
+      },
+      {
+        "title": "Alberta Advantage Immigration Program",
+        "url": "https://www.alberta.ca/alberta-advantage-immigration-program",
+        "source": "Government of Alberta"
+      },
+      {
+        "title": "Post-graduation work permit program updates",
+        "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/work/after-graduation.html",
+        "source": "IRCC"
+      }
+    ]
+  }
+]

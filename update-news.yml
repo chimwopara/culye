@@ -1,0 +1,43 @@
+name: Update Immigration News
+
+on:
+  schedule:
+    # Run every Sunday at 9 PM MST (Edmonton time)
+    # MST is UTC-7, so 9 PM MST = 4 AM UTC Monday
+    - cron: '0 4 * * 1'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  update-news:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        pip install requests
+    
+    - name: Run news fetcher
+      env:
+        NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
+        DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+      run: |
+        python news_fetcher.py
+    
+    - name: Commit and push if changed
+      run: |
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "GitHub Actions Bot"
+        git add blog_posts.json latest_post.json
+        git diff --staged --quiet || git commit -m "Update immigration news - $(date +'%Y-%m-%d')"
+        git push
