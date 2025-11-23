@@ -1,7 +1,7 @@
 // Simple News Loader for GitHub Pages
 // This version fetches news directly from GitHub without needing an API server
 
-const GITHUB_NEWS_URL = 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/blog_posts.json';
+const GITHUB_NEWS_URL = 'https://raw.githubusercontent.com/chimwopara/culye/main/blog_posts.json';
 
 // Auto-initialize when page loads
 if (document.readyState === 'loading') {
